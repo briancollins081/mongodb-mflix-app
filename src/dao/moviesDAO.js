@@ -61,7 +61,7 @@ export default class MoviesDAO {
       // and _id. Do not put a limit in your own implementation, the limit
       // here is only included to avoid sending 46000 documents down the
       // wire.find({countries:{$in: countriesList}},{title:1})
-      cursor = await movies.find({countries:{$in:countries}}).project({title:1})
+      cursor = await movies.find({ countries: { $in: countries } }).project({ title: 1 })
     } catch (e) {
       console.error(`Unable to issue find command, ${e}`)
       return []
@@ -105,10 +105,10 @@ export default class MoviesDAO {
    * @returns {QueryParams} The QueryParams for genre search
    */
   static genreSearchQuery(genre) {
-    console.log(" static genreSearchQuery(genre)");
-    console.log(genre);
-    
-    
+    // console.log(" static genreSearchQuery(genre)");
+    // console.log(genre);
+
+
     /**
     Ticket: Text and Subfield Search
 
@@ -117,13 +117,13 @@ export default class MoviesDAO {
     */
 
     const searchGenre = Array.isArray(genre) ? genre : genre.split(", ")
-    console.log('const searchGenre = Array.isArray(genre) ? genre : genre.split(", ")');
-    console.log(searchGenre);
-    
-    
+    // console.log('const searchGenre = Array.isArray(genre) ? genre : genre.split(", ")');
+    // console.log(searchGenre);
+
+
     // TODO Ticket: Text and Subfield Search
     // Construct a query that will search for the chosen genre.
-    const query = {genres:{$in:searchGenre}}
+    const query = { genres: { $in: searchGenre } }
     const project = {}
     const sort = DEFAULT_SORT
 
@@ -266,11 +266,11 @@ export default class MoviesDAO {
 
     // TODO Ticket: Paging
     // Use the cursor to only return the movies that belong on the current page
-    const displayCursor = cursor.limit(moviesPerPage)
+    const displayCursor = cursor.skip(page * moviesPerPage).limit(moviesPerPage)
 
     try {
       const moviesList = await displayCursor.toArray()
-      const totalNumMovies = page === 0 ? await movies.countDocuments(query) : 0
+      const totalNumMovies = page === 0 ? await movies.countDocuments(query) : moviesPerPage * page
 
       return { moviesList, totalNumMovies }
     } catch (e) {
