@@ -11,6 +11,8 @@ app.use(cors())
 process.env.NODE_ENV !== "prod" && app.use(morgan("dev"))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
+console.log('process.env.MFLIX_DB_URI');
+console.log(process.env.MFLIX_DB_URI);
 
 // Register api routes
 app.use("/api/v1/movies", movies)
